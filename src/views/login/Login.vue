@@ -32,15 +32,18 @@
 </template>
 
 <script setup lang="ts">
+import useUserStore from "@/store/user.ts";
 import Footer from "@/views/layout/Footer.vue";
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import {storeToRefs} from "pinia";
 
 interface formType {
   username: string,
   password: string,
 }
 
+const userStore = useUserStore()
 const formData = ref<formType>({
   username: '',
   password: '',
@@ -54,10 +57,23 @@ const validateAll = (): boolean => {
     return false
   }
 }
-const formSubmit = () => {
+const formSubmit = async () => {
   if (validateAll()) {
     // 发送ajax请求
-    console.log('ajax')
+    console.log(userStore)
+    await userStore.login(formData.value)
+    const { reqInfo } = storeToRefs(userStore)
+    if (reqInfo.value.code === 303) {
+      ElMessage.error(reqInfo.value.message)
+    }
+    if (reqInfo.value.code === 302) {
+      ElMessage.error(reqInfo.value.message)
+    }
+    if (reqInfo.value.code === 301) {
+      ElMessage.error(reqInfo.value.message)
+    }
+    // TODO:用户登录成功，跳转到首页
+
   }
   else {
     ElMessage.error('用户名或密码为空!')

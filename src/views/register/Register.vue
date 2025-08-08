@@ -63,6 +63,8 @@
 import Footer from '@/views/layout/Footer.vue'
 import { reactive } from "vue";
 import { ElMessage } from 'element-plus'
+import httpInstance from "@/requests/http.ts";
+import {useRouter} from "vue-router";
 
 interface RegisterForm {
   username: string;
@@ -77,6 +79,8 @@ interface Errors {
   password?: string;
   confirmPassword?: string;
 }
+
+const router = useRouter();
 
 const form = reactive<RegisterForm>({
   username: "",
@@ -133,12 +137,32 @@ function validateAll(): boolean {
   return Object.keys(errors).length === 0;
 }
 
-function handleSubmit() {
-  if (validateAll()) {
-    ElMessage.success("注册成功!")
-    // TODO: 发送 form 数据到后端
-    console.log('ajax请求.....')
 
+const logUp = async () => {
+  const logUpRes = await httpInstance.post("/v1/user/logup", form)
+  return logUpRes;
+}
+
+
+
+async function handleSubmit() {
+  if (validateAll()) {
+    const logUpRes = await logUp()
+    if (logUpRes.data.success) {
+      router.replace("/login")
+      ElMessage.success(logUpRes.data.message);
+    }
+    else {
+      if (logUpRes.data.code === 101) {
+        ElMessage.error(logUpRes.data.message);
+      }
+      if (logUpRes.data.code === 102) {
+        ElMessage.error(logUpRes.data.message);
+      }
+      if (logUpRes.data.code === 103) {
+        ElMessage.error(logUpRes.data.message);
+      }
+    }
   }
 }
 </script>
