@@ -1,124 +1,220 @@
 <template>
   <div class="register-container">
-    <div class="form-box">
-      <h2>注册</h2>
-      <form>
+    <div class="register-card">
+      <h2>用户注册</h2>
+      <form @submit.prevent="handleSubmit">
+        <!-- 用户名 -->
         <div class="form-group">
-          <label for="username">用户名</label>
-          <input type="text" id="username" placeholder="请输入用户名" />
+          <label>用户名</label>
+          <input
+              type="text"
+              v-model.trim="form.username"
+              @input="validateField('username')"
+              placeholder="请输入用户名"
+          />
+          <span class="error" v-if="errors.username">{{ errors.username }}</span>
         </div>
+
+        <!-- 邮箱 -->
         <div class="form-group">
-          <label for="email">邮箱</label>
-          <input type="email" id="email" placeholder="请输入邮箱" />
+          <label>邮箱</label>
+          <input
+              type="email"
+              v-model.trim="form.email"
+              @input="validateField('email')"
+              placeholder="请输入邮箱"
+          />
+          <span class="error" v-if="errors.email">{{ errors.email }}</span>
         </div>
+
+        <!-- 密码 -->
         <div class="form-group">
-          <label for="password">密码</label>
-          <input type="password" id="password" placeholder="请输入密码" />
+          <label>密码</label>
+          <input
+              type="password"
+              v-model.trim="form.password"
+              @input="validateField('password')"
+              placeholder="请输入密码"
+          />
+          <span class="error" v-if="errors.password">{{ errors.password }}</span>
         </div>
+
+        <!-- 确认密码 -->
         <div class="form-group">
-          <label for="confirm-password">确认密码</label>
-          <input type="password" id="confirm-password" placeholder="请再次输入密码" />
+          <label>确认密码</label>
+          <input
+              type="password"
+              v-model.trim="form.confirmPassword"
+              @input="validateField('confirmPassword')"
+              placeholder="请再次输入密码"
+          />
+          <span class="error" v-if="errors.confirmPassword">{{ errors.confirmPassword }}</span>
         </div>
-        <button type="submit">注册</button>
+
+        <!-- 提交按钮 -->
+        <button type="submit" class="submit-btn">注册</button>
       </form>
-      <p class="link">
-        已有账号？<router-link to="/login">立即登录</router-link>
-      </p>
     </div>
   </div>
   <Footer></Footer>
 </template>
 
-<script setup>
-import Footer from "@/views/layout/Footer.vue"
+<script setup lang="ts">
+import Footer from '@/views/layout/Footer.vue'
+import { reactive } from "vue";
+import { ElMessage } from 'element-plus'
+
+interface RegisterForm {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface Errors {
+  username?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
+const form = reactive<RegisterForm>({
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+});
+
+const errors = reactive<Errors>({});
+
+function validateField(field: keyof RegisterForm) {
+  switch (field) {
+    case "username":
+      if (!form.username) {
+        errors.username = "用户名不能为空";
+      } else {
+        delete errors.username;
+      }
+      break;
+    case "email":
+      if (!form.email) {
+        errors.email = "邮箱不能为空";
+      } else if (!/^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(form.email)) {
+        errors.email = "邮箱格式不正确";
+      } else {
+        delete errors.email;
+      }
+      break;
+    case "password":
+      if (!form.password) {
+        errors.password = "密码不能为空";
+      } else if (form.password.length < 6) {
+        errors.password = "密码长度不能少于6位";
+      } else {
+        delete errors.password;
+      }
+      break;
+    case "confirmPassword":
+      if (!form.confirmPassword) {
+        errors.confirmPassword = "请再次输入密码";
+      } else if (form.confirmPassword !== form.password) {
+        errors.confirmPassword = "两次输入的密码不一致";
+      } else {
+        delete errors.confirmPassword;
+      }
+      break;
+  }
+}
+
+function validateAll(): boolean {
+  (Object.keys(form) as (keyof RegisterForm)[]).forEach((key) =>
+      validateField(key)
+  );
+  return Object.keys(errors).length === 0;
+}
+
+function handleSubmit() {
+  if (validateAll()) {
+    ElMessage.success("注册成功!")
+    // TODO: 发送 form 数据到后端
+  }
+}
 </script>
 
 <style scoped>
+/* 页面布局 */
 .register-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 70px); /* Adjust for header height */
-  background-image: linear-gradient(
-      rgba(0, 0, 0, 0.3),
-      rgba(0, 0, 0, 0.3)
-  ), url('../../assets/images/login.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  height: 85vh;
+  background-image: url("@/assets/images/login.jpg");
 }
 
-.form-box {
-  background-color: transparent; /* Slightly transparent for contrast */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 20px;
-  border-radius: 4px;
-  width: 100%;
-  max-width: 400px;
+/* 卡片 */
+.register-card {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: 350px;
+  opacity: 0.9;
+}
+
+/* 标题 */
+.register-card h2 {
   text-align: center;
-  border: #555555 solid 5px;
-}
-
-.form-box h2 {
-  color: honeydew;
-  font-weight: bold;
   margin-bottom: 20px;
+  color: #333;
 }
 
+/* 表单组 */
 .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: 18px;
 }
 
-.form-group label {
-  display: block;
-  color: honeydew;
-  font-weight: bold;
-  margin-bottom: 5px;
+label {
+  font-size: 14px;
+  color: #555;
 }
 
-.form-group input {
+input {
   width: 100%;
   padding: 10px;
+  margin-top: 6px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
+  outline: none;
+  transition: 0.3s;
 }
 
-button {
+input:focus {
+  border-color: #66a6ff;
+  box-shadow: 0 0 4px rgba(102, 166, 255, 0.4);
+}
+
+/* 错误提示 */
+.error {
+  display: block;
+  font-size: 12px;
+  color: red;
+  margin-top: 4px;
+}
+
+/* 按钮 */
+.submit-btn {
   width: 100%;
   padding: 10px;
-  background-color: #333;
-  color: #fff;
+  background: #66a6ff;
+  color: white;
+  font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  transition: 0.3s;
 }
 
-button:hover {
-  background-color: #555;
-}
-
-.link {
-  margin-top: 15px;
-}
-
-.link a {
-  color: honeydew;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.link a:hover {
-  text-decoration: underline;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .form-box {
-    margin: 10px;
-    padding: 15px;
-  }
+.submit-btn:hover {
+  background: #4e8cff;
 }
 </style>

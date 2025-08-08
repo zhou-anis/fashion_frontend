@@ -5,13 +5,23 @@
       <form>
         <div class="form-group">
           <label for="username">用户名或邮箱</label>
-          <input type="text" id="username" placeholder="请输入用户名或邮箱" />
+          <input
+              type="text"
+              id="username"
+              placeholder="请输入用户名或邮箱"
+              v-model="formData.username"
+          />
         </div>
         <div class="form-group">
           <label for="password">密码</label>
-          <input type="password" id="password" placeholder="请输入密码" />
+          <input
+              type="password"
+              id="password"
+              placeholder="请输入密码"
+              v-model="formData.password"
+          />
         </div>
-        <button type="submit">登录</button>
+        <button type="button" @click="formSubmit">登录</button>
       </form>
       <p class="link">
         还没有账号？<a href="/register">立即注册</a>
@@ -23,6 +33,38 @@
 
 <script setup lang="ts">
 import Footer from "@/views/layout/Footer.vue";
+import { ref } from 'vue'
+import { ElMessage } from 'element-plus'
+
+interface formType {
+  username: string,
+  password: string,
+}
+
+const formData = ref<formType>({
+  username: '',
+  password: '',
+})
+
+const validateAll = (): boolean => {
+  if (formData.value.username && formData.value.password) {
+    return true
+  }
+  else {
+    return false
+  }
+}
+const formSubmit = () => {
+  if (validateAll()) {
+    // 发送ajax请求
+    console.log('ajax')
+  }
+  else {
+    ElMessage.error('用户名或密码为空!')
+  }
+}
+
+
 </script>
 
 <style scoped>
@@ -30,7 +72,7 @@ import Footer from "@/views/layout/Footer.vue";
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 70px); /* Adjust for header height */
+  min-height: calc(100vh - 100px); /* Adjust for header height */
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0.3)
@@ -41,18 +83,18 @@ import Footer from "@/views/layout/Footer.vue";
 }
 
 .form-box {
-  background-color: transparent; /* Slightly transparent for contrast */
+  background-color: white; /* Slightly transparent for contrast */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  border-radius: 4px;
+  border-radius: 10px;
   width: 100%;
   max-width: 400px;
   text-align: center;
-  border: #555555 5px solid;
+  opacity: 0.9;
 }
 
 .form-box h2 {
-  color: honeydew;
+  color: #555;
   font-weight: bold;
   margin-bottom: 20px;
 }
@@ -64,7 +106,7 @@ import Footer from "@/views/layout/Footer.vue";
 
 .form-group label {
   display: block;
-  color: honeydew;
+  color: #555;
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -80,7 +122,7 @@ import Footer from "@/views/layout/Footer.vue";
 button {
   width: 100%;
   padding: 10px;
-  background-color: #333;
+  background-color: #66a6ff;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -89,7 +131,7 @@ button {
 }
 
 button:hover {
-  background-color: #555;
+  background-color: #4e8cff;
 }
 
 .link {
@@ -97,7 +139,7 @@ button:hover {
 }
 
 .link a {
-  color: honeydew;
+  color: #555;
   text-decoration: none;
   font-weight: bold;
 }
