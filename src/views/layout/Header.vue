@@ -17,7 +17,7 @@
       <nav class="nav-menu">
         <ul>
           <li><router-link to="/brand" class="dispatch-link">品牌</router-link></li>
-          <li><router-link to="#" class="dispatch-link">活动</router-link></li>
+          <li><router-link to="/event" class="dispatch-link">活动</router-link></li>
           <li><router-link to="#" class="dispatch-link">展示</router-link></li>
         </ul>
       </nav>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Header from "./Header.vue";
-import HomeIndex from "@/views/home/HomeIndex.vue";
 import Footer from "@/views/layout/Footer.vue";
 
 import { computed } from "vue";

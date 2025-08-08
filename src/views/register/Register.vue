@@ -137,6 +137,8 @@ function handleSubmit() {
   if (validateAll()) {
     ElMessage.success("注册成功!")
     // TODO: 发送 form 数据到后端
+    console.log('ajax请求.....')
+
   }
 }
 </script>

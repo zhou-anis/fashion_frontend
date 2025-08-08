@@ -4,6 +4,7 @@ import Login from '@/views/login/Login.vue'
 import Register from '@/views/register/Register.vue'
 import HomeIndex from "@/views/home/HomeIndex.vue";
 import BrandIndex from "../views/brand/BrandIndex.vue";
+import EventIndex from "../views/event/EventIndex.vue";
 
 const routes = [
     {
@@ -17,6 +18,16 @@ const routes = [
             {
                 path: '/brand',
                 component: BrandIndex,
+                meta: {
+                    title: 'Fashion Hub - 品牌'
+                }
+            },
+            {
+                path: '/event',
+                component: EventIndex,
+                meta: {
+                    title: 'Fashion Hub - 活动',
+                }
             }
         ]
     },
