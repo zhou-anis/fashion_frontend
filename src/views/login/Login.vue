@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import useUserStore from "@/store/user.ts";
 import Footer from "@/views/layout/Footer.vue";
+import {useRouter} from "vue-router";
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {storeToRefs} from "pinia";
@@ -43,6 +44,7 @@ interface formType {
   password: string,
 }
 
+const router = useRouter()
 const userStore = useUserStore()
 const formData = ref<formType>({
   username: '',
@@ -72,8 +74,10 @@ const formSubmit = async () => {
     if (reqInfo.value.code === 301) {
       ElMessage.error(reqInfo.value.message)
     }
-    // TODO:用户登录成功，跳转到首页
-
+    if (reqInfo.value.success === true) {
+      ElMessage.success(reqInfo.value.message)
+      router.replace('/')
+    }
   }
   else {
     ElMessage.error('用户名或密码为空!')

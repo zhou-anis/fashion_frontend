@@ -5,6 +5,7 @@ import Register from '@/views/register/Register.vue'
 import HomeIndex from "@/views/home/HomeIndex.vue";
 import BrandIndex from "../views/brand/BrandIndex.vue";
 import EventIndex from "../views/event/EventIndex.vue";
+import CartIndex from "../views/cart/CartIndex.vue";
 
 const routes = [
     {
@@ -28,7 +29,14 @@ const routes = [
                 meta: {
                     title: 'Fashion Hub - 活动',
                 }
-            }
+            },
+            {
+                path: '/cart',
+                component: CartIndex,
+                meta: {
+                    title: '我的购物车',
+                }
+            },
         ]
     },
     {

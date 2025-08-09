@@ -44,11 +44,11 @@
       <div class="user-actions">
         <template v-if="isLoggedIn">
           <div class="user-dropdown">
-            <span class="username">你好，{{ userName }}</span>
+            <span class="username">你好，{{ userName ? userName : email }}</span>
             <ul class="dropdown-menu">
               <li><router-link to="/profile">个人中心</router-link></li>
               <li><router-link to="/orders">我的订单</router-link></li>
-              <li><a href="#">退出登录</a></li>
+              <li @click="logOut" style="margin-left: 10px">退出登录</li>
             </ul>
           </div>
         </template>
@@ -63,8 +63,52 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-const isLoggedIn = ref<boolean>(false)
-const userName = ref<string>('周')
+import useUserStore from "@/store/user.ts";
+import { ElMessage, ElMessageBox } from 'element-plus'
+
+
+const userStore = useUserStore();
+
+const isLoggedIn = ref<boolean>(false);
+const userName = ref<string>('')
+const email = ref<string>('')
+
+if (userStore.isLogin) {
+  isLoggedIn.value = true;
+  userName.value = userStore.userInfo.username;
+  email.value = userStore.userInfo.email;
+}
+
+
+const logOut = () => {
+  ElMessageBox.confirm(
+      '确认退出吗?',
+      'Warning',
+      {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+  )
+      .then(() => {
+        userStore.logout()
+        if (!userStore.userInfo.token) {
+          isLoggedIn.value = false;
+          ElMessage({
+            type: 'success',
+            message: '已退出登录!',
+          })
+        }
+      })
+      .catch(() => {
+        ElMessage({
+          type: 'info',
+          message: '已取消',
+        })
+      })
+}
+
+
 </script>
 
 <style scoped>
@@ -141,13 +185,14 @@ const userName = ref<string>('周')
   position: relative;
   cursor: pointer;
 }
-.username {
-  font-weight: bold;
-  color: #333;
+
+.user-dropdown:hover .dropdown-menu {
+  display: block;
 }
+
 .dropdown-menu {
   position: absolute;
-  top: 30px;
+  top: 100%; /* 紧贴 username 下方 */
   right: 0;
   background-color: white;
   border: 1px solid #ddd;
@@ -158,18 +203,30 @@ const userName = ref<string>('周')
   width: 120px;
   display: none;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2000;
 }
+
 .user-dropdown:hover .dropdown-menu {
   display: block;
 }
 .dropdown-menu li {
   padding: 8px 16px;
+  cursor: pointer;
 }
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+  color: skyblue;
+}
+
 .dropdown-menu li a {
+  display: block;
+  width: 100%;
+  height: 100%;
   color: #333;
   text-decoration: none;
-  display: block;
 }
+
 .dropdown-menu li a:hover {
   background-color: #f0f0f0;
   color: skyblue;

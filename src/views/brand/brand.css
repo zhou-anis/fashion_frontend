@@ -1,0 +1,234 @@
+/* 页面渐入动画 */
+
+.fade-in {
+    animation: fadeInUp 0.8s ease forwards;
+    opacity: 0;
+}
+@keyframes fadeInUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* 头部导航由Header组件负责 */
+
+.brand-hero {
+    background: url('https://images.unsplash.com/photo-1503341455253-b2e723bb3dbb?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+    padding: 0 20px;
+    position: relative;
+}
+.brand-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 1;
+}
+.brand-hero .hero-text {
+    position: relative;
+    z-index: 2;
+}
+.brand-hero h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+.brand-hero p {
+    font-size: 1.25rem;
+}
+
+/* container */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 品牌故事 */
+.story-content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.story-content img {
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgb(0 0 0 / 0.1);
+}
+.story-text {
+    flex: 1;
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* 品牌系列 */
+.series-list {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.series-card {
+    position: relative;
+    width: 280px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgb(0 0 0 / 0.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    background: #fff;
+}
+.series-card:hover {
+    transform: translateY(-8px);
+}
+.series-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.series-card:hover .card-overlay {
+    opacity: 1;
+}
+.view-more {
+    background: rgba(255,255,255,0.9);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: transform 0.3s ease;
+}
+.view-more:hover {
+    transform: scale(1.05);
+}
+
+/* 品牌理念 */
+.values-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.value-item {
+    width: 220px;
+    text-align: center;
+}
+.value-item img {
+    width: 80px;
+    margin-bottom: 12px;
+}
+
+/* 新闻轮播 */
+.news-slider {
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.news-track {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.news-item {
+    min-width: 100%;
+    background: #f9f9f9;
+    padding: 16px;
+    text-align: center;
+    font-size: 1rem;
+    color: #444;
+}
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+.prev { left: 10px; }
+.next { right: 10px; }
+
+/* 页脚 */
+.footer {
+    background: #222;
+    color: #aaa;
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 0.9rem;
+    margin-top: 60px;
+}
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 40px 20px;
+}
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #333;
+}
+.values-grid, .ambassadors-grid, .awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+    gap: 20px;
+}
+.value-item, .ambassador-item, .award-item {
+    text-align: center;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+.value-item:hover, .ambassador-item:hover, .award-item:hover {
+    transform: translateY(-5px);
+}
+.value-item img, .ambassador-item img, .award-item img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 15px;
+}
+.news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.news-list li {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: #fafafa;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+.news-list li strong {
+    color: #ff6600;
+}
+.footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}

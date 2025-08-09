@@ -1,16 +1,16 @@
 <template>
   <div class="home-container">
     <!-- Hero Banner -->
-    <HeroBanner></HeroBanner>
+    <HomeBanner></HomeBanner>
     <!-- Category Grid first -->
-    <CategorySection></CategorySection>
+    <HomeCategory></HomeCategory>
 
   </div>
 </template>
 
 <script setup lang="ts">
 import './home.css'
-import HeroBanner from "@/views/home/HeroBanner.vue";
-import CategorySection from "@/views/home/CategorySection.vue";
+import HomeBanner from "@/views/home/HomeBanner.vue";
+import HomeCategory from "@/views/home/HomeCategory.vue";
 </script>
 

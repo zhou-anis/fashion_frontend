@@ -11,8 +11,7 @@ const useUserStore = defineStore("user", () => {
         password: string;
     }
     interface userResponse {
-        userName: string;
-        password: string;
+        username: string;
         email: string;
         token: string;
     }
@@ -22,17 +21,29 @@ const useUserStore = defineStore("user", () => {
         status: boolean;
         data: userResponse;
     }
-    const reqInfo = ref<reqResponse>()
-    const userInfo = ref<userResponse>()
+
+    const reqInfo = ref<reqResponse | {}>()
+    const userInfo = ref<userResponse | {}>()
+    const isLogin = ref<boolean>(false);
     const login = async (data: userForm) => {
         const logInRes = await httpInstance.post<reqResponse>("v1/user/login", data)
+        isLogin.value = true
         reqInfo.value = logInRes.data
         userInfo.value = logInRes.data.data
     }
+
+    const logout = (): void => {
+        userInfo.value = {}
+        reqInfo.value = {}
+        isLogin.value = false
+    }
+
     return {
+        isLogin,
         reqInfo,
         userInfo,
         login,
+        logout,
     }
 
 }, {
