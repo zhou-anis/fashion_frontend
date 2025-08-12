@@ -6,6 +6,8 @@ import HomeIndex from "@/views/home/HomeIndex.vue";
 import BrandIndex from "../views/brand/BrandIndex.vue";
 import EventIndex from "../views/event/EventIndex.vue";
 import CartIndex from "../views/cart/CartIndex.vue";
+import ConcreteIndex from "../views/Concrete/ConcreteIndex.vue";
+
 
 const routes = [
     {
@@ -37,6 +39,10 @@ const routes = [
                     title: '我的购物车',
                 }
             },
+            {
+                path: '/concrete/:id',
+                component: ConcreteIndex,
+            }
         ]
     },
     {

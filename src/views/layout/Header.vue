@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import useUserStore from "@/store/user.ts";
+import useUserStore from "@/store/userStore.js";
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 

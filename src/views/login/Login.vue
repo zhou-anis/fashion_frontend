@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/store/user.ts";
+import useUserStore from "@/store/userStore.js";
 import Footer from "@/views/layout/Footer.vue";
 import {useRouter} from "vue-router";
 import { ref } from 'vue'
