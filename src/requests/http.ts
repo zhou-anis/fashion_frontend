@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {type AxiosResponse} from "axios";
 import useUserStore from "../store/userStore.ts";
 import router from "../route";
 import { ElMessage } from 'element-plus'

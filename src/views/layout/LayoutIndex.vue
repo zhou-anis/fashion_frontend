@@ -16,10 +16,14 @@ if (isHome) {
 
 <template>
   <Header></Header>
+  <div class="main-container">
   <router-view></router-view>
+  </div>
   <Footer></Footer>
 </template>
 
 <style scoped>
-
+.main-container {
+  padding-top: 80px;
+}
 </style>

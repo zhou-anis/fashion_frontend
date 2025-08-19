@@ -7,6 +7,7 @@ import BrandIndex from "../views/brand/BrandIndex.vue";
 import EventIndex from "../views/event/EventIndex.vue";
 import CartIndex from "../views/cart/CartIndex.vue";
 import ConcreteIndex from "../views/Concrete/ConcreteIndex.vue";
+import CommodityIndex from "../views/commodity/CommodityIndex.vue";
 
 
 const routes = [
@@ -19,28 +20,32 @@ const routes = [
                 component: HomeIndex,
             },
             {
-                path: '/brand',
+                path: 'brand',
                 component: BrandIndex,
                 meta: {
                     title: 'Fashion Hub - 品牌'
                 }
             },
             {
-                path: '/event',
+                path: 'event',
                 component: EventIndex,
                 meta: {
                     title: 'Fashion Hub - 活动',
                 }
             },
             {
-                path: '/cart',
+                path: 'cart',
                 component: CartIndex,
                 meta: {
                     title: '我的购物车',
                 }
             },
             {
-                path: '/concrete/:id',
+                path: 'commodities/:id',
+                component: CommodityIndex,
+            },
+            {
+                path: 'detail/:id',
                 component: ConcreteIndex,
             }
         ]
@@ -64,6 +69,11 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    scrollBehavior() {
+        return {
+            top: 0,
+        }
+    }
 })
 
 
