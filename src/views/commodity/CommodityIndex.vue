@@ -21,7 +21,7 @@
 
     <OptionDialog
         v-model:visible="dialogVisible"
-        :product="{ name: 'T恤', price: 99.9, image: 'src/assets/images/pexels-freestocks-291762.jpg' }"
+        :product="[selectedProduct, productName, productPrice, productImage]"
         :specs="['S', 'M', 'L', 'XL']"
         :colors="['白色', '黑色', '蓝色']"
         @add-cart="handleAddCart"
@@ -42,6 +42,8 @@ import OptionDialog from "./OptionDialog.vue";
 import {onMounted, ref} from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {useCommodityStore} from "../../store/commodityStore.ts";
+import {useCartStore} from "../../store/cartStore.ts";
+import {ElMessage} from "element-plus";
 
 
 const router = useRouter();
@@ -54,14 +56,14 @@ const currentPage = ref<number>(1);
 const prevPage = async () => {
   if (currentPage.value > 1) {
     currentPage.value--
-    await CommodityStore.getGoodsList(Number(route.params.id), currentPage.value)
+    await CommodityStore.getGoodsList(Number(route.params.first_cate_id),Number(route.params.id), currentPage.value)
     window.scrollTo(0, 0)
   }
 };
 const nextPage = async () => {
   if (currentPage.value < (CommodityStore?.resResponse?.total_pages || 1)) {
     currentPage.value++;
-    await CommodityStore.getGoodsList(Number(route.params.id), currentPage.value);
+    await CommodityStore.getGoodsList(Number(route.params.first_cate_id),Number(route.params.id), currentPage.value);
     window.scrollTo(0, 0)
   }
 };
@@ -69,9 +71,13 @@ const goDetail = (id: number) => {
   router.push(`/detail/${id}`);
 }
 
+
+const products = ref<any>([])
+
 onMounted(async () => {
-  await CommodityStore.getGoodsList(Number(route.params.id), 1)
+  await CommodityStore.getGoodsList(Number(route.params.first_cate_id), Number(route.params.id), 1)
   console.log(CommodityStore.goods)
+  products.value = CommodityStore.goods;
 })
 
 
@@ -79,13 +85,34 @@ const dialogVisible = ref(false);
 const dialogTitle = ref("选择规格");
 const specOptions = ref<string[]>([]); // 动态传入规格
 const selectedProduct = ref<any>(null);
+const productName = ref<string>("");
+const productPrice = ref<number>(0);
+const productImage = ref<string>("");
 
 const openOptionDialog = (product: any) => {
-  selectedProduct.value = product;
+  selectedProduct.value = product.id;
+  productName.value = product.name;
+  productPrice.value = product.price;
+  productImage.value = product.image;
   dialogTitle.value = `选择 ${product.name} 的规格`;
   specOptions.value = ["S", "M", "L", "XL"]; // 这里可以根据 product 动态加载
   dialogVisible.value = true;
 };
+const cartStore = useCartStore();
+
+const handleAddCart = (payload?: { spec?: string; color?: string; quantity?: number }) => {
+  cartStore.addCart({
+    productId: selectedProduct.value,
+    name: productName.value,
+    price: productPrice.value,
+    image: productImage.value,
+    spec: payload?.spec,
+    color: payload?.color,
+    quantity: payload?.quantity ?? 1,
+  });
+  dialogVisible.value = false
+  ElMessage.success('已加入购物车')
+}
 
 </script>
 

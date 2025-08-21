@@ -3,10 +3,10 @@
     <div class="dialog-box">
       <!-- 顶部商品信息 -->
       <div class="product-info">
-        <img :src="product?.image || 'https://via.placeholder.com/100'" class="product-img" />
+        <img :src="`http://localhost:8000${props.product[3]}`" class="product-img" />
         <div class="product-detail">
-          <h3>{{ product?.name || "商品名称" }}</h3>
-          <p class="product-price">￥{{ product?.price || "0.00" }}</p>
+          <h3>{{ props.product[1] }}</h3>
+          <p class="product-price">￥{{ props.product[2] }}</p>
         </div>
       </div>
 
@@ -61,11 +61,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits } from "vue";
+import {ref, defineProps, defineEmits} from "vue";
+import {useCommodityStore} from "../../store/commodityStore.ts";
+
+const CommodityStore = useCommodityStore();
 
 const props = defineProps<{
   visible: boolean;
-  product?: { name: string; price: number; image?: string };
+  product: any[];
   specs?: string[];
   colors?: string[];
 }>();
@@ -94,7 +97,7 @@ const addToCart = () => {
     return;
   }
   emit("add-cart", {
-    product: props.product,
+    product: CommodityStore.goods,
     spec: selectedSpec.value,
     color: selectedColor.value,
     quantity: quantity.value,
@@ -108,13 +111,13 @@ const buyNow = () => {
     return;
   }
   emit("buy", {
-    product: props.product,
     spec: selectedSpec.value,
     color: selectedColor.value,
     quantity: quantity.value,
   });
   close();
 };
+
 </script>
 
 <style scoped>

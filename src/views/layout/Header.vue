@@ -40,6 +40,7 @@
       </div>
 
 
+
       <!-- User Actions -->
       <div class="user-actions">
         <template v-if="isLoggedIn">
@@ -288,7 +289,9 @@ const logOut = () => {
     left: 0;
   }
 }
+
 .username:hover{
   color: skyblue;
 }
+
 </style>

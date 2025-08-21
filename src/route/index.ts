@@ -41,7 +41,7 @@ const routes = [
                 }
             },
             {
-                path: 'commodities/:id',
+                path: 'commodities/:first_cate_id/:id',
                 component: CommodityIndex,
             },
             {

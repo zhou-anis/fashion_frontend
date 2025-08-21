@@ -10,6 +10,7 @@ export const useCommodityStore = defineStore("commodityStore", () => {
         price:number;
         image:string;
         categoryId:string;
+        firsCateId:string;
     }
 
     interface reqType {
@@ -23,10 +24,11 @@ export const useCommodityStore = defineStore("commodityStore", () => {
     const resResponse = ref<reqType>();
     const goods = ref<goodsType[]>();
 
-    const getGoodsList = async (categoryId: number, page: number) => {
-        const resp = await httpInstance.get<reqType>(`v1/product/${categoryId}?page=${page}`);
+    const getGoodsList = async (first_categoryId:number, categoryId: number, page: number) => {
+        const resp = await httpInstance.get<reqType>(`v1/product/${first_categoryId}/${categoryId}?page=${page}`);
         resResponse.value = resp.data
         goods.value = resp.data.data;
+        console.log(goods.value)
     };
 
     return {

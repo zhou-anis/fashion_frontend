@@ -20,17 +20,17 @@ onMounted(async ()=>{
 })
 
 
-const goCommodities = (itemId: number) => {
-  router.push(`/commodities/${itemId}`);
+const goCommodities = (first_cate_id: number, itemId: number) => {
+  router.push(`/commodities/${first_cate_id}/${itemId}`);
 }
 
 </script>
 
 <template>
-  <div class="product-grid" v-for="first_cate in listData" :key="first_cate.id">
+  <div class="product-grid" v-for="first_cate in listData" :key="first_cate?.id">
     <h2>{{first_cate.name}}</h2>
     <div class="products">
-      <div class="product-card" v-for="item in first_cate.secondary_category" :key="item.id" @click="goCommodities(item.id)">
+      <div class="product-card" v-for="item in first_cate.secondary_category" :key="item.id" @click="goCommodities(first_cate?.id, item.id)">
         <img :src="`http://localhost:8000${item.image}`" style="height: 300px" alt="男士上衣" />
         <h3>{{item.category_name}}</h3>
 <!--        <p>{{item}}</p>-->
