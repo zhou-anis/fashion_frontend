@@ -21,7 +21,7 @@ onMounted(async ()=>{
 
 
 const goCommodities = (first_cate_id: number, itemId: number) => {
-  router.push(`/commodities/${first_cate_id}/${itemId}`);
+  router.push(`/commodities/${first_cate_id}/${ itemId>9 ? itemId-9 : itemId }`);
 }
 
 </script>

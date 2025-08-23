@@ -19,7 +19,7 @@ type AddPayload = Omit<CartItem, "key">;
 export const useCartStore = defineStore("cart", () => {
     const user = useUserStore();
 
-    const userId = user.userInfo.email || "guest";
+    const userId = user.userInfo?.email || "guest";
     const CART_KEY = `cart_items_${userId}`;
 
     const items = ref<CartItem[]>(JSON.parse(localStorage.getItem(CART_KEY) || "[]"));
