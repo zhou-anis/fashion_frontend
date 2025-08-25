@@ -26,7 +26,7 @@ const useUserStore = defineStore("user", () => {
     const userInfo = ref<userResponse | {}>()
     const isLogin = ref<boolean>(false);
     const login = async (data: userForm) => {
-        const logInRes = await httpInstance.post<reqResponse>("v1/user/login", data)
+        const logInRes = await httpInstance.post<reqResponse>("/user/login", data)
         isLogin.value = true
         reqInfo.value = logInRes.data
         userInfo.value = logInRes.data.data

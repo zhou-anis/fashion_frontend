@@ -3,7 +3,7 @@
     <div class="dialog-box">
       <!-- 顶部商品信息 -->
       <div class="product-info">
-        <img :src="`http://localhost:8000${props.product[3]}`" class="product-img" />
+        <img :src="`http://1.15.233.235:8000${props.product[3]}`" class="product-img" />
         <div class="product-detail">
           <h3>{{ props.product[1] }}</h3>
           <p class="product-price">￥{{ props.product[2] }}</p>

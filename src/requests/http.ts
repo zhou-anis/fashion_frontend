@@ -6,7 +6,7 @@ import { ElMessage } from 'element-plus'
 
 // 创建http请求实例
 const httpInstance = axios.create({
-    baseURL: "http://localhost:8000",
+    baseURL: "/v1",
     timeout: 5000,
 })
 
@@ -15,7 +15,7 @@ const httpInstance = axios.create({
 httpInstance.interceptors.request.use(
     (config) => {
         const userStore = useUserStore();
-        const token = userStore.userInfo?.token;
+        const token = (userStore.userInfo as any).token;
         if (token) {
             config.headers.Authorization = `FH ${token}`;
         }

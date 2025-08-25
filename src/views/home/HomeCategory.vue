@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {categoryStore} from "@/store/categoryStore.ts";
-import {computed, onMounted, ref} from "vue";
+import {categoryStore} from "../../store/categoryStore.ts";
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 
@@ -12,7 +12,7 @@ const router = useRouter();
 
 onMounted(async ()=>{
   await cateStore.getCategoryList()
-  if(cateStore.categoryList.success) {
+  if(cateStore?.categoryList?.success) {
     listData.value = cateStore.FirstCateList;
     console.log(listData.value);
   }
@@ -31,7 +31,7 @@ const goCommodities = (first_cate_id: number, itemId: number) => {
     <h2>{{first_cate.name}}</h2>
     <div class="products">
       <div class="product-card" v-for="item in first_cate.secondary_category" :key="item.id" @click="goCommodities(first_cate?.id, item.id)">
-        <img :src="`http://localhost:8000${item.image}`" style="height: 300px" alt="男士上衣" />
+        <img :src="`http://1.15.233.235:8000${item.image}`" style="height: 300px" alt="男士上衣" />
         <h3>{{item.category_name}}</h3>
 <!--        <p>{{item}}</p>-->
       </div>

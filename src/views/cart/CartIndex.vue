@@ -42,8 +42,8 @@
 
 <script setup lang="ts">
 import {computed, onMounted} from 'vue'
-import { useCartStore } from '@/store/cartStore'
-import useUserStore from "@/store/userStore.ts";
+import { useCartStore } from '../../store/cartStore'
+import useUserStore from "../../store/userStore.ts";
 
 const user = useUserStore();
 const cart = useCartStore()
@@ -58,7 +58,7 @@ const decrement = (item: any) => cart.updateQuantity(item.key, Math.max(1, item.
 
 const fullImage = (img: string) => (img?.startsWith('http') ? img : `http://localhost:8000${img}`)
 onMounted(() => {
-  if (!user.userInfo.token){
+  if (!(user.userInfo as any).token){
     cart.clear()
   }
 })

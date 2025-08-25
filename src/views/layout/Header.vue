@@ -4,7 +4,7 @@
       <!-- Logo -->
       <div class="logo">
         <router-link to="/">
-          <img src="@/assets/images/resized-removebg-preview.png" style="width: 50px;" alt="">
+          <img src="../../assets/images/resized-removebg-preview.png" style="width: 50px;" alt="">
           <svg width="120" height="50" viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
             <text x="2" y="35" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
               AniesFashion
@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 import {ref} from 'vue'
-import useUserStore from "@/store/userStore.js";
+import useUserStore from "../../store/userStore.js";
 import { ElMessage, ElMessageBox } from 'element-plus'
 
 
@@ -76,8 +76,8 @@ const email = ref<string>('')
 
 if (userStore.isLogin) {
   isLoggedIn.value = true;
-  userName.value = userStore.userInfo.username;
-  email.value = userStore.userInfo.email;
+  userName.value = (userStore.userInfo as any).username;
+  email.value = (userStore.userInfo as any).email;
 }
 
 
@@ -93,7 +93,7 @@ const logOut = () => {
   )
       .then(() => {
         userStore.logout()
-        if (!userStore.userInfo.token) {
+        if (!(userStore.userInfo as any).token) {
           isLoggedIn.value = false;
           ElMessage({
             type: 'success',

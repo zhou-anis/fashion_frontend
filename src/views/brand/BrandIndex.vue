@@ -28,13 +28,13 @@
 </template>
 
 <script setup lang="ts">
-import BrandHero from "@/views/brand/BrandHero.vue";
-import BrandStory from "@/views/brand/BrandStory.vue";
-import BrandSeries from "@/views/brand/BrandSeries.vue";
-import BrandValue from "@/views/brand/BrandValue.vue";
-import BrandStars from "@/views/brand/BrandStars.vue";
-import BrandAwards from "@/views/brand/BrandAwards.vue";
-import BrandNews from "@/views/brand/BrandNews.vue";
+import BrandHero from "./BrandHero.vue";
+import BrandStory from "./BrandStory.vue";
+import BrandSeries from "./BrandSeries.vue";
+import BrandValue from "./BrandValue.vue";
+import BrandStars from "./BrandStars.vue";
+import BrandAwards from "./BrandAwards.vue";
+import BrandNews from "./BrandNews.vue";
 
 import './brand.css'
 

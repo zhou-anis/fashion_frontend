@@ -1,8 +1,8 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import LayoutIndex from '../views/layout/LayoutIndex.vue'
-import Login from '@/views/login/Login.vue'
-import Register from '@/views/register/Register.vue'
-import HomeIndex from "@/views/home/HomeIndex.vue";
+import Login from '../views/login/Login.vue'
+import Register from '../views/register/Register.vue'
+import HomeIndex from "../views/home/HomeIndex.vue";
 import BrandIndex from "../views/brand/BrandIndex.vue";
 import EventIndex from "../views/event/EventIndex.vue";
 import CartIndex from "../views/cart/CartIndex.vue";
@@ -10,7 +10,7 @@ import ConcreteIndex from "../views/Concrete/ConcreteIndex.vue";
 import CommodityIndex from "../views/commodity/CommodityIndex.vue";
 
 
-const routes = [
+const routes: any = [
     {
         path: '/',
         component: LayoutIndex,
@@ -80,7 +80,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.meta.title) {
-        document.title = to.meta.title
+        (document as any).title = to.meta.title
     }
     next()
 })

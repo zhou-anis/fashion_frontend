@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Header from "./Header.vue";
-import Footer from "@/views/layout/Footer.vue";
+import Footer from "./Footer.vue";
 
 import { computed } from "vue";
 import {useRoute} from "vue-router";

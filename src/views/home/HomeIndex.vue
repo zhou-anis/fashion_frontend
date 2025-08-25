@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import './home.css'
-import HomeBanner from "@/views/home/HomeBanner.vue";
-import HomeCategory from "@/views/home/HomeCategory.vue";
+import HomeBanner from "./HomeBanner.vue";
+import HomeCategory from "./HomeCategory.vue";
 </script>
 

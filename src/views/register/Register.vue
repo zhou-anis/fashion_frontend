@@ -60,10 +60,10 @@
 </template>
 
 <script setup lang="ts">
-import Footer from '@/views/layout/Footer.vue'
+import Footer from '../layout/Footer.vue'
 import { reactive } from "vue";
 import { ElMessage } from 'element-plus'
-import httpInstance from "@/requests/http.ts";
+import httpInstance from "../../requests/http.ts";
 import {useRouter} from "vue-router";
 
 interface RegisterForm {
@@ -174,7 +174,7 @@ async function handleSubmit() {
   justify-content: center;
   align-items: center;
   height: 85vh;
-  background-image: url("@/assets/images/login.jpg");
+  background-image: url("../../assets/images/login.jpg");
 }
 
 /* 卡片 */

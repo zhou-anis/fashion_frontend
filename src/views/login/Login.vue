@@ -32,8 +32,8 @@
 </template>
 
 <script setup lang="ts">
-import useUserStore from "@/store/userStore.js";
-import Footer from "@/views/layout/Footer.vue";
+import useUserStore from "../../store/userStore.js";
+import Footer from "../layout/Footer.vue";
 import {useRouter} from "vue-router";
 import { ref } from 'vue'
 import { ElMessage } from 'element-plus'
@@ -65,17 +65,17 @@ const formSubmit = async () => {
     console.log(userStore)
     await userStore.login(formData.value)
     const { reqInfo } = storeToRefs(userStore)
-    if (reqInfo.value.code === 303) {
-      ElMessage.error(reqInfo.value.message)
+    if ((reqInfo.value as any).code === 303) {
+      ElMessage.error((reqInfo.value as any).message)
     }
-    if (reqInfo.value.code === 302) {
-      ElMessage.error(reqInfo.value.message)
+    if ((reqInfo.value as any).code === 302) {
+      ElMessage.error((reqInfo.value as any).message)
     }
-    if (reqInfo.value.code === 301) {
-      ElMessage.error(reqInfo.value.message)
+    if ((reqInfo.value as any).code === 301) {
+      ElMessage.error((reqInfo.value as any).message)
     }
-    if (reqInfo.value.success === true) {
-      ElMessage.success(reqInfo.value.message)
+    if ((reqInfo.value as any).success === true) {
+      ElMessage.success((reqInfo.value as any).message)
       router.replace('/')
     }
   }

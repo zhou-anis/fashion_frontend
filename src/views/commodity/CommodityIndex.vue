@@ -11,7 +11,7 @@
             :key="product.id"
             @click="goDetail(Number(product.id))"
         >
-          <img :src="`http://localhost:8000${product.image}`" alt="product" class="product-image" />
+          <img :src="`http://1.15.233.235:8000${product.image}`" alt="product" class="product-image" />
           <h3 class="product-name">{{ product.name }}</h3>
           <p class="product-price">￥{{ product.price }}</p>
           <button class="option-button" @click.stop="openOptionDialog(product)">加入购物车</button>
@@ -112,6 +112,9 @@ const handleAddCart = (payload?: { spec?: string; color?: string; quantity?: num
   });
   dialogVisible.value = false
   ElMessage.success('已加入购物车')
+}
+const handleBuy = () => {
+  alert("OK")
 }
 
 </script>

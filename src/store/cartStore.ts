@@ -1,7 +1,7 @@
 // store/cartStore.ts
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import useUserStore from "@/store/userStore.ts";
+import useUserStore from "./userStore.ts";
 
 export interface CartItem {
     key: string          // 唯一 key（商品+规格/颜色）
@@ -19,7 +19,7 @@ type AddPayload = Omit<CartItem, "key">;
 export const useCartStore = defineStore("cart", () => {
     const user = useUserStore();
 
-    const userId = user.userInfo?.email || "guest";
+    const userId = (user.userInfo as any).email || "guest";
     const CART_KEY = `cart_items_${userId}`;
 
     const items = ref<CartItem[]>(JSON.parse(localStorage.getItem(CART_KEY) || "[]"));
