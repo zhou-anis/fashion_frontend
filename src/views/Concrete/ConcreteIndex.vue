@@ -1,39 +1,43 @@
 <template>
   <main class="product-detail-page">
     <!-- 面包屑 -->
-    <nav class="breadcrumb">
+    <nav class="breadcrumb" v-if="item">
       <a href="/">首页</a> /
       <a href="/products">商品列表</a> /
-      <span>{{ product.name }}</span>
+      <span>{{ item.name }}</span>
     </nav>
 
     <!-- 商品详情 -->
-    <section class="product-detail">
+    <section v-if="item" class="product-detail">
       <div class="product-gallery">
-        <img :src="selectedImage" :alt="product.name" class="main-image" />
+        <img
+            :src="`http://127.0.0.1:8000${selectedImage || item.image}`"
+            :alt="item.name"
+            class="main-image"
+        />
         <div class="thumbnail-list">
           <img
-              v-for="(img, index) in product.images"
-              :key="index"
-              :src="img"
+              v-for="i in 4"
+              :key="i"
+              :src="`http://127.0.0.1:8000${item.image}`"
               class="thumbnail"
-              :class="{ active: img === selectedImage }"
-              @click="selectedImage = img"
+              :class="{ active: `http://127.0.0.1:8000${item.image}` === selectedImage }"
+              @click="selectedImage = `http://127.0.0.1:8000${item.image}`"
           />
         </div>
       </div>
 
       <div class="product-info">
-        <h1>{{ product.name }}</h1>
-        <p class="brand">品牌：{{ product.brand }}</p>
-        <p class="price">￥{{ product.price }}</p>
-        <p class="desc">{{ product.description }}</p>
+        <h1>{{ item.name }}</h1>
+        <p class="brand">品牌：{{ item.name }}</p>
+        <p class="price">￥{{ item.price }}</p>
+        <p class="desc">{{ item.name }}</p>
 
         <div class="options">
           <div class="option">
             <span>颜色：</span>
             <button
-                v-for="(color, idx) in product.colors"
+                v-for="(color, idx) in ['红色', '黄色', '蓝色', '绿色']"
                 :key="idx"
                 :class="{ active: color === selectedColor }"
                 @click="selectedColor = color"
@@ -44,7 +48,7 @@
           <div class="option">
             <span>尺码：</span>
             <button
-                v-for="(size, idx) in product.sizes"
+                v-for="(size, idx) in ['M', 'L', 'XL', 'XXL']"
                 :key="idx"
                 :class="{ active: size === selectedSize }"
                 @click="selectedSize = size"
@@ -62,8 +66,13 @@
       </div>
     </section>
 
+    <!-- 加载中提示 -->
+    <section v-else>
+      <p>加载中...</p>
+    </section>
+
     <!-- 商品详情和评价 -->
-    <section class="product-tabs">
+    <section v-if="item" class="product-tabs">
       <div class="tabs">
         <button :class="{ active: activeTab === 'detail' }" @click="activeTab = 'detail'">商品详情</button>
         <button :class="{ active: activeTab === 'reviews' }" @click="activeTab = 'reviews'">用户评价</button>
@@ -71,8 +80,9 @@
       <div class="tab-content">
         <div v-if="activeTab === 'detail'">
           <h2>商品详情</h2>
-          <p>{{ product.detailText }}</p>
+          <p>无</p>
         </div>
+        <!--
         <div v-else>
           <h2>用户评价</h2>
           <div v-for="(review, index) in product.reviews" :key="index" class="review">
@@ -80,57 +90,36 @@
             <p>{{ review.comment }}</p>
           </div>
         </div>
+        -->
       </div>
     </section>
   </main>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import useDetailStore from "../../store/detailStore.ts";
+import type { commodity } from "../../store/detailStore.ts";
 
-interface Review {
-  user: string;
-  rating: number;
-  comment: string;
-}
+const route = useRoute();
+const detailStore = useDetailStore();
 
-interface Product {
-  name: string;
-  brand: string;
-  price: number;
-  description: string;
-  images: string[];
-  colors: string[];
-  sizes: string[];
-  detailText: string;
-  reviews: Review[];
-}
-
-const product = ref<Product>({
-  name: "时尚夏季连衣裙",
-  brand: "优雅女装",
-  price: 299,
-  description: "这款夏季连衣裙采用轻盈面料，透气舒适，展现优雅气质。",
-  images: [
-    "src/assets/images/pexels-freestocks-291762.jpg",
-    "src/assets/images/pexels-freestocks-291762.jpg",
-    "src/assets/images/pexels-freestocks-291762.jpg",
-    "src/assets/images/pexels-freestocks-291762.jpg",
-  ],
-  colors: ["红色", "蓝色", "黑色"],
-  sizes: ["S", "M", "L", "XL"],
-  detailText: "面料柔软舒适，适合夏季穿着，轻松展现女性魅力。",
-  reviews: [
-    { user: "Alice", rating: 5, comment: "穿上很漂亮，布料很舒服！" },
-    { user: "Bob", rating: 4, comment: "性价比高，尺码刚好。" },
-  ],
-});
-
-const selectedImage = ref(product.value.images[0]);
-const selectedColor = ref(product.value.colors[0]);
-const selectedSize = ref(product.value.sizes[0]);
 const quantity = ref<number>(1);
-const activeTab = ref<"detail" | "reviews">("detail");
+const item = ref<commodity | null>(null);
+
+const selectedImage = ref<string>("");
+const selectedColor = ref<string>("");
+const selectedSize = ref<string>("");
+const activeTab = ref<string>("detail");
+
+onMounted(async () => {
+  await detailStore.getDetail(Number(route.params.id));
+  item.value = detailStore.item;
+  if (item.value) {
+    selectedImage.value = `http://127.0.0.1:8000${item.value.image}`;
+  }
+});
 </script>
 
 <style scoped>

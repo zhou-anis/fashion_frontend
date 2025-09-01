@@ -62,7 +62,6 @@ const validateAll = (): boolean => {
 const formSubmit = async () => {
   if (validateAll()) {
     // 发送ajax请求
-    console.log(userStore)
     await userStore.login(formData.value)
     const { reqInfo } = storeToRefs(userStore)
     if ((reqInfo.value as any).code === 303) {

@@ -29,7 +29,7 @@ export const categoryStore = defineStore("categoryStore", () => {
     const FirstCateList = ref<FirstCateType[]>();
 
     const getCategoryList = async () => {
-        const res = await httpInstance.get<reqType>("/cate/ls");
+        const res = await httpInstance.get<reqType>("/v1/cate/ls");
         categoryList.value = res.data;
         FirstCateList.value = res.data.data;
         console.log(categoryList.value);

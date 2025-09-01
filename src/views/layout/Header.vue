@@ -7,7 +7,7 @@
           <img src="../../assets/images/resized-removebg-preview.png" style="width: 50px;" alt="">
           <svg width="120" height="50" viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
             <text x="2" y="35" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#333">
-              AniesFashion
+              Fashion Hub
             </text>
           </svg>
         </router-link>

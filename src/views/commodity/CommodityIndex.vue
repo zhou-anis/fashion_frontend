@@ -9,9 +9,9 @@
             class="product-card"
             v-for="product in CommodityStore.goods"
             :key="product.id"
-            @click="goDetail(Number(product.id))"
+            @click="goDetail(Number(product.id), product.name)"
         >
-          <img :src="`http://1.15.233.235:8000${product.image}`" alt="product" class="product-image" />
+          <img :src="`http://127.0.0.1:8000${product.image}`" alt="product" class="product-image" />
           <h3 class="product-name">{{ product.name }}</h3>
           <p class="product-price">￥{{ product.price }}</p>
           <button class="option-button" @click.stop="openOptionDialog(product)">加入购物车</button>
@@ -67,8 +67,10 @@ const nextPage = async () => {
     window.scrollTo(0, 0)
   }
 };
-const goDetail = (id: number) => {
-  router.push(`/detail/${id}`);
+const goDetail = (id: number, name: string) => {
+  router.push({path: `/detail/${id}`, query: {
+    name: name,
+    }});
 }
 
 
