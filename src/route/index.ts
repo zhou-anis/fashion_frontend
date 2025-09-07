@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHistory, type NavigationGuardNext, type RouteLocationNormalizedGeneric} from 'vue-router'
 import LayoutIndex from '../views/layout/LayoutIndex.vue'
 import Login from '../views/login/Login.vue'
 import Register from '../views/register/Register.vue'
@@ -8,6 +8,8 @@ import EventIndex from "../views/event/EventIndex.vue";
 import CartIndex from "../views/cart/CartIndex.vue";
 import ConcreteIndex from "../views/Concrete/ConcreteIndex.vue";
 import CommodityIndex from "../views/commodity/CommodityIndex.vue";
+import CenterIndex from "../views/profile/CenterIndex.vue";
+import UserAddress from "../views/profile/UserAddress.vue";
 
 
 const routes: any = [
@@ -47,6 +49,28 @@ const routes: any = [
             {
                 path: 'detail/:id',
                 component: ConcreteIndex,
+            },
+            {
+                path: 'center',
+                component: CenterIndex,
+                children: [
+                    {
+                        path: '',
+                        component: UserInfo,
+                    },
+                    {
+                        path: 'address',
+                        component: UserAddress,
+                    },
+                    {
+                        path: 'orders',
+                        component: Orders,
+                    },
+                    {
+                        path: 'conf',
+                        component: Configuration
+                    }
+                ]
             }
         ]
     },
@@ -77,14 +101,43 @@ const router = createRouter({
 })
 
 
+import useUserStore from '../store/userStore.ts'
+import UserInfo from "../views/profile/UserInfo.vue";
+import Orders from "../views/profile/Orders.vue";
+import Configuration from "../views/profile/Configuration.vue";
+router.beforeEach((to:RouteLocationNormalizedGeneric, from:RouteLocationNormalizedGeneric, next:NavigationGuardNext) => {
 
-router.beforeEach((to, from, next) => {
+
+    const userStore = useUserStore()
     if (to.meta.title) {
         (document as any).title = to.meta.title
     }
-    next()
+    // 查询用户是否登陆，已经登陆不能进入/login页面
+    if (userStore.isLogin) {
+        if (to.path === '/login') {
+            next('/')
+        }
+        else {
+            next()
+        }
+    }
+    // 未登陆，放行，很重要，如果不写else，项目启动页面会空白，是否对于某些特定的路由限制由后端来完成
+    else {
+        next()
+    }
 })
 
 
-
 export default router
+
+
+
+
+
+
+
+
+
+
+
+

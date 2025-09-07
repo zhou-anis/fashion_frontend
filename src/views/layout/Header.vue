@@ -47,7 +47,7 @@
           <div class="user-dropdown">
             <span class="username">你好，{{ userName ? userName : email }}</span>
             <ul class="dropdown-menu">
-              <li><router-link to="/profile">个人中心</router-link></li>
+              <li><router-link to="/center">个人中心</router-link></li>
               <li><router-link to="/orders">我的订单</router-link></li>
               <li @click="logOut" style="margin-left: 10px">退出登录</li>
             </ul>

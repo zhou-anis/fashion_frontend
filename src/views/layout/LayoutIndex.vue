@@ -15,6 +15,7 @@ if (isHome) {
 </script>
 
 <template>
+  <h1>wss</h1>
   <Header></Header>
   <div class="main-container">
   <router-view></router-view>

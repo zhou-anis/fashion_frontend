@@ -23,6 +23,14 @@
         </div>
         <button type="button" @click="formSubmit">登录</button>
       </form>
+
+      <!-- 新增 QQ 登录 -->
+      <div class="oauth-login">
+        <p>或使用第三方账号登录</p>
+          <img src="@/assets/icons/QQ.svg" alt="QQ" class="qq-icon"/>
+          <span @click="goQQOauth" class="qq-login">QQ 登录</span>
+      </div>
+
       <p class="link">
         还没有账号？<a href="/register">立即注册</a>
       </p>
@@ -34,55 +42,74 @@
 <script setup lang="ts">
 import useUserStore from "../../store/userStore.js";
 import Footer from "../layout/Footer.vue";
-import {useRouter} from "vue-router";
-import { ref } from 'vue'
-import { ElMessage } from 'element-plus'
-import {storeToRefs} from "pinia";
+import { useRouter, useRoute } from "vue-router";
+import { ref } from "vue";
+import { ElMessage } from "element-plus";
+import { storeToRefs } from "pinia";
+import httpInstance from "../../requests/http.ts";
 
 interface formType {
-  username: string,
-  password: string,
+  username: string;
+  password: string;
+}
+interface OauthResponse {
+  code: number;
+  message: string;
+  success: boolean;
+  oauthUrl: string;
 }
 
-const router = useRouter()
-const userStore = useUserStore()
+
+const router = useRouter();
+const route = useRoute();
+
+const userStore = useUserStore();
 const formData = ref<formType>({
-  username: '',
-  password: '',
-})
+  username: "",
+  password: "",
+});
 
 const validateAll = (): boolean => {
   if (formData.value.username && formData.value.password) {
-    return true
+    return true;
+  } else {
+    return false;
   }
-  else {
-    return false
-  }
-}
+};
+
 const formSubmit = async () => {
   if (validateAll()) {
     // 发送ajax请求
-    await userStore.login(formData.value)
-    const { reqInfo } = storeToRefs(userStore)
+    await userStore.login(formData.value);
+    const { reqInfo } = storeToRefs(userStore);
     if ((reqInfo.value as any).code === 303) {
-      ElMessage.error((reqInfo.value as any).message)
+      ElMessage.error((reqInfo.value as any).message);
     }
     if ((reqInfo.value as any).code === 302) {
-      ElMessage.error((reqInfo.value as any).message)
+      ElMessage.error((reqInfo.value as any).message);
     }
     if ((reqInfo.value as any).code === 301) {
-      ElMessage.error((reqInfo.value as any).message)
+      ElMessage.error((reqInfo.value as any).message);
     }
     if ((reqInfo.value as any).success === true) {
-      ElMessage.success((reqInfo.value as any).message)
-      router.replace('/')
+      ElMessage.success((reqInfo.value as any).message);
+      router.replace("/");
     }
+  } else {
+    ElMessage.error("用户名或密码为空!");
   }
-  else {
-    ElMessage.error('用户名或密码为空!')
-  }
-}
+};
 
+
+
+
+const goQQOauth = async () => {
+  const res = await httpInstance.get<OauthResponse>(`/v1/user/qq_login?next=${encodeURIComponent(route.fullPath)}`)
+  if (res.data.success) {
+    window.open(res.data.oauthUrl,'_blank');
+  }
+
+}
 
 </script>
 
@@ -91,18 +118,19 @@ const formSubmit = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 100px); /* Adjust for header height */
+  min-height: calc(100vh - 100px);
   background-image: linear-gradient(
       rgba(0, 0, 0, 0.3),
       rgba(0, 0, 0, 0.3)
-  ), url('../../assets/images/login.jpg');
+  ),
+  url("../../assets/images/login.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
 .form-box {
-  background-color: white; /* Slightly transparent for contrast */
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 10px;
@@ -167,7 +195,22 @@ button:hover {
   text-decoration: underline;
 }
 
-/* Responsive Design */
+/* 新增 QQ 登录按钮样式 */
+.oauth-login {
+  margin: 20px 0;
+}
+
+
+.qq-login:hover {
+  color: #12b7f5;
+}
+
+.qq-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .form-box {
     margin: 10px;
